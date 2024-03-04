@@ -1,0 +1,93 @@
+---
+title: "Getting Data "
+---
+
+### Data Source
+
+
+There are two data source: 
+
+  1. csv file downloaded directly from GTR website
+  2. For project description, use GTR api to fetch description
+  
+
+```{python}
+#| code-summary: library and setup
+import requests
+import pandas as pd
+from IPython.display import display
+
+
+## define a function to check interactivity
+## so when render this document code take too long don't have to re-run everytime 
+import os
+def is_interactive():
+   return 'SHLVL' not in os.environ
+print('Interactive?', is_interactive())
+
+## Parameter
+SEARCH_TERM="artificial intelligence"
+MAX_RESULTS=5175 # gathered by direct search 
+URL = "https://gtr.ukri.org/gtr/api/projects.json?sf=pro.sd&so=A" # sort by project start date Decending (D) Acending(A)
+
+print(f'Gathering data related to term "{SEARCH_TERM}", this has {MAX_RESULTS} results')
+```
+
+### From Download
+
+![Search term "aritificial intelligence" has option to download csv](figures/Screenshot 2024-03-03 at 15.51.38.png)
+```{python}
+#| code-summary: example of the donwload
+#| code-fold: show
+csv_export = pd.read_csv('data/projectsearch-1709481069771.csv')
+display(csv_export.sample(3))
+```
+
+Unfortunately this `csv` export don't contain project description. So we are manually 
+extract this data using the API call.
+
+
+### From API
+
+```{python}
+#| code-summary: gathering project description
+
+# GTR end-point
+if is_interactive():
+  print("Interactive context, fetch live data")
+  ## Initialize a Data Frame
+  df = pd.DataFrame(columns = ['id', "title", "abstractText", "techAbstractText","potentialImpact"])
+  i = int()
+  for i in range(1, MAX_RESULTS // 25 + 1):
+      parameters = {
+          "q":SEARCH_TERM,
+          "s":25,
+          "p":i
+          # "f":"pro.rt" # search in project topic 
+      }
+      
+      response = requests.get(URL, params = parameters)
+      x = response.json()
+      dfx = pd.DataFrame.from_dict(x['project'])[["id","title","abstractText","techAbstractText",'potentialImpact']]
+      df = pd.concat([df,dfx])
+      
+      ## Save data.frame into a parquet 
+      df.to_parquet('data/gtr.parquet')
+      api_export = df
+else:
+  print("Skipping intractive ")
+  api_export = pd.read_parquet("data/gtr.parquet")
+```
+
+```{python}
+#| code-summary: Sample Data
+display(api_export.sample(3))
+```
+
+```{python}
+api_export.shape[0] - csv_export.shape[0]
+```
+
+
+
+

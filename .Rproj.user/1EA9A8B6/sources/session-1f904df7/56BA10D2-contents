@@ -1,0 +1,23 @@
+---
+title: "Invest in AI Executive Summary"
+---
+
+
+<!-- This section to use as presentation to both Technical audience and  -->
+<!-- non-technical audience (if I don't decide an a quarto presentation the last minutes?) -->
+
+<!-- Should evaluate as less as possible.  -->
+
+```{r}
+print("Hello Panel!")
+```
+
+
+<!-- SECTION 0: THE LEAD/THE CONTEXT -->
+<!-- - Something a short pitch like Lead Character, Context, Hook, the Pain -->
+
+<!-- SECTION 1: DATA PIPLEINE -->
+<!-- - Here is how I get the data -->
+<!-- - Here are how good they are. Just one line section -->
+
+<!-- SECTION 2: GENERAL STATISTICS -->

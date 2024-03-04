@@ -1,0 +1,183 @@
+---
+title: "Trend and Elit Project"
+---
+
+```{r}
+#| message: false
+#| code-summary: setup and load data
+require(readr)
+require(arrow)
+require(tidyverse)
+require(lubridate)
+require(tidyr)
+require(scales)
+require(plotly)
+require(ggtext)
+
+source("set_graphic.R")
+csv_export=read_csv('data/projectsearch-1709481069771.csv')
+api_export=arrow::read_parquet('data/gtr.parquet')
+## clean parse date
+gtr = csv_export |> 
+  mutate(across(c(StartDate, EndDate), ~as.Date(.x, '%d/%m/%Y')))
+```
+
+
+
+### Explore Trend
+:::{.panel-tabset}
+
+```{r}
+#| code-summary: creating a plot function
+
+## some interesting events for time series
+
+events = tibble::tribble(
+  ~'year',~'description',
+  '2020-03-31','First Covid lockdown',
+  '2023-03-14', 'GPT4 Launch',
+  '2023-11-01', 'AI Safety Summit',
+  '2022-10-20','Mini-Budget'
+) |> 
+  mutate(year=lubridate::ymd(year)) |> 
+  mutate(year_l =floor_date(year,"years"), year_r=ceiling_date(year,"years")) |> 
+  mutate(across(starts_with("year"), ~ as.Date(.x)))
+
+## write an annotation function to avoid boiler palette
+add_hline_text=function(data, message='', color = '#E74C3C') {
+  stopifnot("`add_hline_text` is designed to take sepcific format"=all(c("year", "n_diff") %in% names(data)))
+  
+  return(list(
+  geom_linerange(data=data, aes(x=year,ymin=0,ymax=n_diff), 
+                 linetype="dashed", color = color, alpha=0.7),
+  geom_point(data=data, aes(x=year,y=n_diff), color=color, shape=17),
+  geom_richtext(# annotation along the line
+    data=data, fill=NA,label.color = NA,size=2, color=color,hjust=-0.5,vjust=0,angle=-90,
+    aes(x=year,y=n_diff,label=paste({{message}},'in', year(year)))),
+  geom_richtext(# figure on top
+    data=data, fill=NA,label.color = NA,size=2, color=color,hjust=0.5,vjust=0,angle=0,
+    aes(x=year,y=n_diff,label= ifelse(n_diff > 10000, paste0(round(n_diff/1000),' k'),n_diff )))
+  ))
+}
+
+## plot the actual line
+plot_freq = function(gtr, expr) {
+  stopifnot("Require `events` dataframe in parent frame, please load all code"
+            =exists("events",envir = parent.env(environment())))
+  ## exploration on investment rend
+  gtr_freq = gtr |> 
+    select(StartDate, EndDate, AwardPounds) |> 
+    pivot_longer(cols = c(StartDate, EndDate)) |> 
+    mutate(year = floor_date(value,'years') + months(6)) |> 
+    group_by(name, year) |> 
+    summarise(
+      n = {{expr}},
+      .groups = "drop"
+    ) |> 
+    filter(year < Sys.Date() |> floor_date("years"))
+  
+  ## create a combined for differences
+  to_end = gtr_freq |>
+    filter(name=='EndDate') |> 
+    select(-name)
+  to_start = gtr_freq |>
+    filter(name=='StartDate') |> 
+    select(-name)
+  merged=full_join(
+    to_start,to_end,
+    by = c("year"),suffix=c("_to_start", "_to_end")
+    ) |> 
+    mutate(n_diff = n_to_start - n_to_end)
+  
+  ## event
+  gtr_year_n_diff = select(merged,year,n_diff)
+  events_m = events |>
+    left_join(gtr_year_n_diff, by=c("year_l"="year")) |>
+    left_join(gtr_year_n_diff, by=c("year_r"="year"), suffix = c("_l","_r")) |>
+    mutate(across(starts_with("n_diff"), ~ replace_na(.x,0))) |>
+    mutate(n_diff= (  n_diff_r - n_diff_l) * interval(year, year_l)/years(1) + n_diff_l )
+  
+  ## calculate peak  
+  peak = merged |> 
+    filter(n_diff == max(n_diff)) |> 
+    select(year,n_diff)
+  
+  ## First Plot
+  gtr_freq |> 
+    ggplot() +
+    geom_line(aes(x = year, y = n, color = name)) + 
+    geom_point(aes(x = year, y = n, color = name)) +
+    geom_area(data=merged, aes(x=year,y=n_diff),fill="darkgrey", alpha=0.2) + # add area
+    add_hline_text(peak, "<b>Live Project Peak</b>") + # annotate
+    geom_point(data=events_m, aes(x=year, y=0), color = "#2980B9",shape=17) +
+    geom_richtext(data=events_m, aes(x=year, y=0, label=description), 
+                  color = "#3498DB",fill=NA,label.color = NA,size=2,hjust=1,vjust=0.5,angle=-90,
+                  ) +
+    scale_y_continuous(labels=comma) + 
+    scale_color_manual(values=c("StartDate"="blue", "EndDate"="navy")
+                       ) +
+    scale_x_date(date_breaks="1 year", date_labels="%Y-%b") +
+    theme(axis.text.x = element_text(angle = -90, vjust = 0.5, hjust=1))
+}
+```
+
+#### Absolute Number
+```{r}
+gtr |> plot_freq(n()) + 
+  ylab("Number of Project")
+```
+
+#### Award
+```{r}
+gtr |> 
+  plot_freq(sum(AwardPounds,na.rm=T)) + 
+  ylab("Total Award Sumed") +
+  labs(caption="This plot may be useful if funding were allocated all at the start of the year")
+```
+:::
+
+
+### Explore Elite (Most Expensive) Projects
+
+```{r}
+require(htmlwidgets)
+
+## parameter
+SNOBYNESS=0.02 ## this is top n most expensive
+PRICE_FORMULAR=quo(
+  AwardPounds/as.numeric(duration, units='days') ## this is how you calculate expensiveness
+) 
+
+## calculate award per year 
+price_gtr = gtr |> 
+  mutate(duration = EndDate - StartDate) |>
+  mutate(duration_d = as.numeric(duration, units='days')) |> 
+  mutate(price = !! PRICE_FORMULAR) |> 
+  arrange(desc(price)) |> 
+  mutate(expensive_rank = row_number()) |>
+  filter(expensive_rank <= quantile(expensive_rank, SNOBYNESS))
+
+g <- price_gtr |>
+  ggplot(aes(y = price, label = LeadROName, label1= Title, label2 = ProjectReference)) + 
+  geom_linerange(aes(xmin = StartDate, xmax = EndDate, y = price, alpha = duration_d), 
+                 color = "darkgrey") +
+  geom_point(aes(x = StartDate), color = "blue") + 
+  geom_point(aes(x = EndDate), color = "navy") +
+  ggtitle(glue::glue("Here are the top {SNOBYNESS * 100}% most expensive AI projects")) +
+  scale_alpha_continuous(trans='log')
+
+ggplotly(g) |>
+  style(traces = 2, text = paste(price_gtr$StartDate,"\n",price_gtr$duration, "days")) |>
+  style(traces = 1, text = paste( price_gtr$PIFirstName, price_gtr$PISurname,"\n",price_gtr$duration, "days")) |>
+  style(traces = 3, customdata = price_gtr$GTRProjectUrl, text = paste(price_gtr$EndDate,"\n", price_gtr$LeadROName, "\n",price_gtr$Title)) |>
+  onRender("
+    function(el) { 
+      el.on('plotly_click', function(d) { 
+        var url = d.points[0].customdata;
+        window.open(url);
+      });
+    }
+  ") #set up click event that open URL
+```
+
+

@@ -1,0 +1,142 @@
+---
+title: "Getting Data"
+---
+
+### Overview
+
+*note*: code in this notebook are written in `python`
+
+There are two data source: 
+
+  1. `csv` file downloaded directly from GTR website;
+  2. For project description, from GTR api;
+  3. Additional coordinate data using open-api;
+  
+Although from step1 and step2 we are able to get same number of data, only 86.05%
+can join.
+
+```{python}
+#| code-summary: library and setup
+import requests
+import pandas as pd
+from IPython.display import display
+
+
+## define a function to check interactivity
+## so when render this document code take too long don't have to re-run everytime 
+import os
+def is_interactive():
+   return 'SHLVL' not in os.environ
+print('Interactive?', is_interactive())
+
+## Parameter
+SEARCH_TERM="artificial intelligence"
+MAX_RESULTS=5175 # gathered by direct search 
+URL = "https://gtr.ukri.org/gtr/api/projects.json?sf=pro.sd&so=A" # sort by project start date Decending (D) Acending(A)
+
+print(f'Gathering data related to term "{SEARCH_TERM}", this has {MAX_RESULTS} results')
+```
+
+### From Download
+
+![Search term "aritificial intelligence" has option to download csv](figures/Screenshot 2024-03-03 at 15.51.38.png)
+```{python}
+#| code-summary: example of the donwload
+#| code-fold: show
+csv_export = pd.read_csv('data/projectsearch-1709481069771.csv')
+display(csv_export.sample(3))
+```
+
+Unfortunately this `csv` export don't contain project description. So we are manually 
+extract this data using the API call.
+
+
+### From API
+
+```{python}
+#| code-summary: gathering project description
+
+# GTR end-point
+if is_interactive():
+  print("Interactive context, fetch live data")
+  ## Initialize a Data Frame
+  df = pd.DataFrame(columns = ['id', "title", "abstractText", "techAbstractText","potentialImpact"])
+  i = int()
+  for i in range(1, MAX_RESULTS // 25 + 1):
+      parameters = {
+          "q":SEARCH_TERM,
+          "s":25,
+          "p":i
+          # "f":"pro.rt" # search in project topic 
+      }
+      
+      response = requests.get(URL, params = parameters)
+      x = response.json()
+      dfx = pd.DataFrame.from_dict(x['project'])[["id","title","abstractText","techAbstractText",'potentialImpact']]
+      df = pd.concat([df,dfx])
+      
+      ## Save data.frame into a parquet 
+      df.to_parquet('data/gtr.parquet')
+      api_export = df
+else:
+  print("Skipping intractive")
+  api_export = pd.read_parquet("data/gtr.parquet")
+```
+
+```{python}
+#| code-summary: Sample Data
+display(api_export.sample(3))
+```
+
+### Data Quality
+
+```{python}
+#| code-summary: Basic Validations
+#| code-fold: show
+## check api export
+assert api_export.shape[0] == api_export.id.unique().shape[0], "Check `field id` is unique"
+
+## check csv export
+assert csv_export.shape[0] == csv_export.ProjectId.unique().shape[0], "Check `field id` ProjectID is unique"
+
+## check relationships
+## check if csv and api call returned same number of rows
+assert api_export.shape[0] - csv_export.shape[0] == 0, "API and manual search result return the same rows"
+```
+
+
+```{python}
+#| code-summary: join key check
+#| code-fold: show
+from numpy import intersect1d, setdiff1d
+
+api_id = api_export.id.values
+csv_id = csv_export.ProjectId.values
+
+common = intersect1d(api_id,csv_id,assume_unique=True)
+api_extra = setdiff1d(api_id,csv_id,assume_unique=True)
+csv_extra = setdiff1d(csv_id, api_id,assume_unique=True)
+
+print(f'''
+We can join {((common.shape[0] / csv_export.shape[0]) * 100):.02f} % of data
+
+Details here:
+- {common.shape[0]} can join;
+- {api_extra.shape[0]} extra projects from api;
+- {csv_extra.shape[0]} extra projects from csv download;
+''')
+```
+
+```{python}
+#| code-fold: show
+## Example of extra API export
+display(api_export.query("id.isin(@api_extra)").sample(3))
+```
+
+
+```{python}
+#| code-fold: show
+## Example of extra CSV export
+display(csv_export.query("ProjectId.isin(@csv_extra)").sample(3))
+```
+

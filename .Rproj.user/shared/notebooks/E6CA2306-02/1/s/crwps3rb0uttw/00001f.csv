@@ -1,0 +1,4 @@
+"0","gtr |> "
+"0","  plot_freq(sum(AwardPounds,na.rm=T)) + "
+"0","  ylab(""Total Award Sumed"") +"
+"0","  labs(caption=""This plot may be useful if funding were allocated all at the start of the year"")"
