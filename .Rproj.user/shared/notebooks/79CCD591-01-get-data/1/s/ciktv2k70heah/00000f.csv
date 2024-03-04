@@ -1,2 +1,0 @@
-"0","assert api_export.shape[0] - csv_export.shape[0] == 0, ""API and manual search result return the same rows"""
-"0",""

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.550">
+<meta name="generator" content="quarto-1.3.433">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -57,7 +57,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -79,13 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 50,
-  "keyboard-shortcut": [
-    "f",
-    "/",
-    "s"
-  ],
-  "show-item-context": false,
+  "limit": 20,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -94,14 +88,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
-    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
 }</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
@@ -111,9 +104,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container mx-auto">
+      <div class="navbar-brand-container">
     <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">Investing in AI - UKRI</span>
     </a>
@@ -125,23 +118,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
-<span class="menu-text">Home</span></a>
+    <a class="nav-link" href="./index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
   </li>  
 </ul>
-          </div> <!-- /navcollapse -->
-          <div class="quarto-navbar-tools">
+            <div class="quarto-navbar-tools ms-auto">
 </div>
+          </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01-get-data.html">Getting Data</a></li><li class="breadcrumb-item"><a href="./01-get-data.html">Getting Data</a></li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-        </a>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01.html">Getting Data</a></li><li class="breadcrumb-item"><a href="./01.html">Getting Data</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -151,7 +144,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
         <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
         <div id="quarto-search" class="" title="Search"></div>
@@ -170,7 +163,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./01-get-data.html" class="sidebar-item-text sidebar-link active">
+  <a href="./01.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Getting Data</span></a>
   </div>
 </li>
@@ -188,7 +181,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./02.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Exploratory</span></a>
+ <span class="menu-text">Trend and Elite Project</span></a>
   </div>
 </li>
       </ul>
@@ -196,7 +189,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
@@ -213,7 +206,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01-get-data.html">Getting Data</a></li><li class="breadcrumb-item"><a href="./01-get-data.html">Getting Data</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Getting Data</h1>
 </div>
@@ -228,9 +221,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
-
 </header>
-
 
 <section id="overview" class="level3">
 <h3 class="anchored" data-anchor-id="overview">Overview</h3>
@@ -242,27 +233,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Additional coordinate data using open-api;</li>
 </ol>
 <p>Although from step1 and step2 we are able to get same number of data, only 86.05% can join.</p>
-<div id="2d5e7969" class="cell" data-execution_count="1">
-<details class="code-fold">
+<div class="cell" data-execution_count="1">
+<details>
 <summary>library and setup</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> display</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">## define a function to check interactivity</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">## so when render this document code take too long don't have to re-run everytime </span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> is_interactive():</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>   <span class="cf">return</span> <span class="st">'SHLVL'</span> <span class="kw">not</span> <span class="kw">in</span> os.environ</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Interactive?'</span>, is_interactive())</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">## Parameter</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>SEARCH_TERM<span class="op">=</span><span class="st">"artificial intelligence"</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>MAX_RESULTS<span class="op">=</span><span class="dv">5175</span> <span class="co"># gathered by direct search </span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>URL <span class="op">=</span> <span class="st">"https://gtr.ukri.org/gtr/api/projects.json?sf=pro.sd&amp;so=A"</span> <span class="co"># sort by project start date Decending (D) Acending(A)</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Gathering data related to term "</span><span class="sc">{</span>SEARCH_TERM<span class="sc">}</span><span class="ss">", this has </span><span class="sc">{</span>MAX_RESULTS<span class="sc">}</span><span class="ss"> results'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">## define a function to check interactivity</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">## so when render this document code take too long don't have to re-run everytime </span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> is_interactive():</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>   <span class="cf">return</span> <span class="st">'SHLVL'</span> <span class="kw">not</span> <span class="kw">in</span> os.environ</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Interactive?'</span>, is_interactive())</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">## Parameter</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>SEARCH_TERM<span class="op">=</span><span class="st">"artificial intelligence"</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>MAX_RESULTS<span class="op">=</span><span class="dv">5175</span> <span class="co"># gathered by direct search </span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>URL <span class="op">=</span> <span class="st">"https://gtr.ukri.org/gtr/api/projects.json?sf=pro.sd&amp;so=A"</span> <span class="co"># sort by project start date Decending (D) Acending(A)</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Gathering data related to term "</span><span class="sc">{</span>SEARCH_TERM<span class="sc">}</span><span class="ss">", this has </span><span class="sc">{</span>MAX_RESULTS<span class="sc">}</span><span class="ss"> results'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Interactive? False
@@ -275,17 +265,16 @@ Gathering data related to term "artificial intelligence", this has 5175 results<
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="figures/Screenshot 2024-03-03 at 15.51.38.png" class="img-fluid figure-img"></p>
-<figcaption>Search term “aritificial intelligence” has option to download csv</figcaption>
+<figcaption class="figure-caption">Search term “aritificial intelligence” has option to download csv</figcaption>
 </figure>
 </div>
-<div id="6e4625bb" class="cell" data-execution_count="2">
-<details open="" class="code-fold">
+<div class="cell" data-execution_count="2">
+<details open="">
 <summary>example of the donwload</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>csv_export <span class="op">=</span> pd.read_csv(<span class="st">'data/projectsearch-1709481069771.csv'</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>display(csv_export.sample(<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<div>
 <div>
 
 
@@ -318,76 +307,76 @@ Gathering data related to term "artificial intelligence", this has 5175 results<
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">4563</td>
-<td>EPSRC</td>
-<td>EP/J004995/1</td>
-<td>University of Southampton</td>
-<td>Sch of Psychology</td>
-<td>Research Grant</td>
-<td>Stevenage</td>
-<td>Sarah</td>
+<td data-quarto-table-cell-role="th">362</td>
+<td>Innovate UK</td>
+<td>104751</td>
+<td>URBANTIDE LIMITED</td>
 <td>NaN</td>
-<td>http://orcid.org/0000-0003-4155-2939</td>
+<td>Feasibility Studies</td>
+<td>Revill</td>
+<td>Steven</td>
+<td>NaN</td>
+<td>NaN</td>
 <td>NaN</td>
 <td>...</td>
-<td>31/03/2015</td>
-<td>1905242.0</td>
+<td>30/09/2019</td>
+<td>72414.0</td>
 <td>NaN</td>
-<td>South East</td>
+<td>London</td>
 <td>Closed</td>
 <td>http://internal-gtr-tomcat-alb-611010599.eu-we...</td>
-<td>3A9209F6-2171-40B6-81DF-7B7FA3A60BE9</td>
-<td>798CB33D-C79E-4578-83F2-72606407192C</td>
-<td>64EDCEB7-556D-4890-9582-FD894F98C10D</td>
-<td>CC2AA4E5-9A40-4183-8E37-F57B1D16C58E</td>
+<td>398A1E16-BD48-426F-ABF2-7588ABBCDB7C</td>
+<td>1308DB9B-A8CB-43DC-8754-A44B2F23F8E8</td>
+<td>E391A44E-FD59-435D-8BA1-AE0AD3D6B75E</td>
+<td>4537E93F-C687-4707-8932-624104CF50FE</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1113</td>
+<td data-quarto-table-cell-role="th">768</td>
 <td>EPSRC</td>
-<td>2586026</td>
-<td>University of Edinburgh</td>
-<td>Sch of Engineering</td>
-<td>Studentship</td>
+<td>EP/M026884/1</td>
+<td>University College London</td>
+<td>Surgery</td>
+<td>Research Grant</td>
+<td>Song</td>
+<td>Wenhui</td>
 <td>NaN</td>
 <td>NaN</td>
 <td>NaN</td>
-<td>NaN</td>
-<td>Denker</td>
 <td>...</td>
-<td>31/03/2026</td>
-<td>0.0</td>
+<td>31/05/2019</td>
+<td>870392.0</td>
 <td>NaN</td>
-<td>Scotland</td>
-<td>Active</td>
+<td>London</td>
+<td>Closed</td>
 <td>http://internal-gtr-tomcat-alb-611010599.eu-we...</td>
-<td>3CFC5385-F757-4FCF-939E-1CB7AD8FD0C9</td>
+<td>EDE57B67-2E92-4F2A-855A-49C76AA76675</td>
 <td>798CB33D-C79E-4578-83F2-72606407192C</td>
-<td>A4735E0B-ED6E-4FC5-9497-CFE564317F54</td>
-<td>NaN</td>
+<td>E7BE255A-5E4B-4E40-9A39-F1458486B92F</td>
+<td>46357C3B-37B6-4A91-84DD-D21F2D8486D3</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">1343</td>
-<td>EPSRC</td>
-<td>EP/V002910/2</td>
-<td>University of Oxford</td>
-<td>Computer Science</td>
-<td>Fellowship</td>
-<td>Flaxman</td>
-<td>Seth</td>
+<td data-quarto-table-cell-role="th">257</td>
+<td>Horizon Europe Guarantee</td>
+<td>EP/X036782/1</td>
+<td>University College London</td>
+<td>Structural Molecular Biology</td>
+<td>Research Grant</td>
+<td>Hansen</td>
+<td>Flemming</td>
 <td>NaN</td>
 <td>NaN</td>
 <td>NaN</td>
 <td>...</td>
-<td>30/09/2025</td>
-<td>1175698.0</td>
+<td>31/03/2028</td>
+<td>2153217.0</td>
 <td>NaN</td>
-<td>South East</td>
+<td>London</td>
 <td>Active</td>
 <td>http://internal-gtr-tomcat-alb-611010599.eu-we...</td>
-<td>9D0C3647-2297-4F81-9ABA-00446763A6CE</td>
-<td>798CB33D-C79E-4578-83F2-72606407192C</td>
-<td>47649064-FCD1-4D7A-A5AA-31B69B9BDFFC</td>
-<td>DE5C4E50-0D4C-4F2C-B56C-07CFA4B197C2</td>
+<td>B6ACF925-2CC7-497A-8C06-7E5F0849F175</td>
+<td>240CEBFD-1052-4EAC-88DF-D88A163D61C8</td>
+<td>E7BE255A-5E4B-4E40-9A39-F1458486B92F</td>
+<td>63C902E1-D1AF-4169-84B1-40AB974B7427</td>
 </tr>
 </tbody>
 </table>
@@ -396,13 +385,12 @@ Gathering data related to term "artificial intelligence", this has 5175 results<
 </div>
 </div>
 </div>
-</div>
 <p>Unfortunately this <code>csv</code> export don’t contain project description. So we are manually extract this data using the API call.</p>
 </section>
 <section id="from-api" class="level3">
 <h3 class="anchored" data-anchor-id="from-api">From API</h3>
-<div id="6d4294e5" class="cell" data-execution_count="3">
-<details class="code-fold">
+<div class="cell" data-execution_count="3">
+<details>
 <summary>gathering project description</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># GTR end-point</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> is_interactive():</span>
@@ -434,13 +422,12 @@ Gathering data related to term "artificial intelligence", this has 5175 results<
 <pre><code>Skipping intractive</code></pre>
 </div>
 </div>
-<div id="b0ade4f9" class="cell" data-execution_count="4">
-<details class="code-fold">
+<div class="cell" data-execution_count="4">
+<details>
 <summary>Sample Data</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>display(api_export.sample(<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<div>
 <div>
 
 
@@ -457,26 +444,26 @@ Gathering data related to term "artificial intelligence", this has 5175 results<
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">4</td>
-<td>09CD9411-F64E-4688-918A-7D1077110956</td>
-<td>Artificial Intelligence in Engineering Managem...</td>
-<td>The focus of this project is the production of...</td>
+<td data-quarto-table-cell-role="th">21</td>
+<td>CE19CB43-9168-4ED5-9ED3-F4291578B1D4</td>
+<td>Machine Learning, Robust Optimisation, and Ver...</td>
+<td>The need for better support to deal with the t...</td>
 <td>None</td>
-<td>None</td>
+<td>Each project site will host a workshop. These ...</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">6</td>
-<td>A68707CB-C002-4970-8D02-D4F8F6E220C2</td>
-<td>Integrating hospital outpatient letters into t...</td>
-<td>The importance of analysing health data collec...</td>
+<td data-quarto-table-cell-role="th">10</td>
+<td>CBA02AE8-BB0C-4B6F-8D3E-932BE96957B2</td>
+<td>Learned Exascale Computational Imaging (LEXCI)</td>
+<td>The emerging era of exascale computing that wi...</td>
 <td>None</td>
 <td>None</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2</td>
-<td>257429F2-881F-4EF2-BBBF-7D9C7F745CFD</td>
-<td>Nanoengineering of bacteria to sense and contr...</td>
-<td>Bioelectrochemical systems (BESs) are capable ...</td>
+<td data-quarto-table-cell-role="th">15</td>
+<td>3082E97C-AC07-469F-ADD6-A2A44FF5D210</td>
+<td>Developing the Caf1 polymer technology into a ...</td>
+<td>Pharmaceuticals have developed via three manuf...</td>
 <td>None</td>
 <td>None</td>
 </tr>
@@ -486,12 +473,11 @@ Gathering data related to term "artificial intelligence", this has 5175 results<
 </div>
 </div>
 </div>
-</div>
 </section>
 <section id="data-quality" class="level3">
 <h3 class="anchored" data-anchor-id="data-quality">Data Quality</h3>
-<div id="14e2f1f4" class="cell" data-execution_count="5">
-<details open="" class="code-fold">
+<div class="cell" data-execution_count="5">
+<details open="">
 <summary>Basic Validations</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">## check api export</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> api_export.shape[<span class="dv">0</span>] <span class="op">==</span> api_export.<span class="bu">id</span>.unique().shape[<span class="dv">0</span>], <span class="st">"Check `field id` is unique"</span></span>
@@ -504,8 +490,8 @@ Gathering data related to term "artificial intelligence", this has 5175 results<
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> api_export.shape[<span class="dv">0</span>] <span class="op">-</span> csv_export.shape[<span class="dv">0</span>] <span class="op">==</span> <span class="dv">0</span>, <span class="st">"API and manual search result return the same rows"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="26eeb820" class="cell" data-execution_count="6">
-<details open="" class="code-fold">
+<div class="cell" data-execution_count="6">
+<details open="">
 <summary>join key check</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> numpy <span class="im">import</span> intersect1d, setdiff1d</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -536,14 +522,13 @@ Details here:
 </code></pre>
 </div>
 </div>
-<div id="bee18ef7" class="cell" data-execution_count="7">
-<details open="" class="code-fold">
+<div class="cell" data-execution_count="7">
+<details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Example of extra API export</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>display(api_export.query(<span class="st">"id.isin(@api_extra)"</span>).sample(<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<div>
 <div>
 
 
@@ -560,28 +545,28 @@ Details here:
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">5</td>
-<td>109803F3-BB3E-48C5-8C97-1F317B3C0CCD</td>
-<td>Justified Assessments of Service Provider Repu...</td>
-<td>Justified Assessments of Service Provider Repu...</td>
+<td data-quarto-table-cell-role="th">0</td>
+<td>58482BBD-02C6-4DA4-B422-D59103E84113</td>
+<td>Algebraic Invariants for Phylogenetic Network ...</td>
+<td>The key goal in phylogenetics is to be able to...</td>
 <td>None</td>
-<td>Decisions on which providers to use for partic...</td>
+<td>None</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">4</td>
-<td>BABA1A5E-9CB5-4CA2-96CF-D36EFF8B89EB</td>
-<td>UKRI Trustworthy Autonomous Systems Node in Trust</td>
-<td>Engineered systems are increasingly being used...</td>
+<td>1CFE4F38-669E-49BD-8BC2-0A5275FC855D</td>
+<td>REMORA - REndezvous Mission for Orbital Recons...</td>
+<td>As of January 2021, our solar system is popula...</td>
 <td>None</td>
 <td>None</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">21</td>
-<td>D598754F-98C8-4CD5-BD85-ED185C1ECB1F</td>
-<td>Unifying audio signal processing and machine l...</td>
-<td>Modern technology is leading to a flood of aud...</td>
+<td data-quarto-table-cell-role="th">6</td>
+<td>6B756B0A-C146-4976-8C97-47FC6F550882</td>
+<td>A Neuromorphic Control System for Agile Biped ...</td>
+<td>Rush-hour in a London mainline railway station...</td>
 <td>None</td>
-<td>The signal processing and machine learning met...</td>
+<td>Our project could have academic and societal i...</td>
 </tr>
 </tbody>
 </table>
@@ -589,15 +574,13 @@ Details here:
 </div>
 </div>
 </div>
-</div>
-<div id="34e6ef44" class="cell" data-execution_count="8">
-<details open="" class="code-fold">
+<div class="cell" data-execution_count="8">
+<details open="">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">## Example of extra CSV export</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>display(csv_export.query(<span class="st">"ProjectId.isin(@csv_extra)"</span>).sample(<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<div>
 <div>
 
 
@@ -630,82 +613,81 @@ Details here:
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">3192</td>
-<td>Innovate UK</td>
-<td>10064969</td>
-<td>THEMA AI LIMITED</td>
+<td data-quarto-table-cell-role="th">2539</td>
+<td>AHRC</td>
+<td>AH/X011585/1</td>
+<td>De Montfort University</td>
+<td>LMS - Leicester Media School</td>
+<td>Research Grant</td>
+<td>Xambó Sedó</td>
+<td>Anna</td>
 <td>NaN</td>
-<td>Collaborative R&amp;D</td>
-<td>Maccabe</td>
-<td>Finn</td>
-<td>NaN</td>
-<td>NaN</td>
+<td>http://orcid.org/0000-0003-2333-6941</td>
 <td>NaN</td>
 <td>...</td>
-<td>31/07/2023</td>
-<td>45379.0</td>
+<td>31/08/2025</td>
+<td>207479.0</td>
 <td>NaN</td>
-<td>South East</td>
-<td>Closed</td>
+<td>East Midlands</td>
+<td>Active</td>
 <td>http://internal-gtr-tomcat-alb-611010599.eu-we...</td>
-<td>38BD09D8-7403-49B6-98FD-6529596F8011</td>
-<td>1308DB9B-A8CB-43DC-8754-A44B2F23F8E8</td>
-<td>A52DF872-A4AE-4C98-95AA-0A585DF95588</td>
-<td>2BFB5E62-6784-416D-81C5-97CC0D9B9DFC</td>
+<td>623A9EA5-4C55-4A72-9CCA-8BFF68EDB430</td>
+<td>1291772D-DFCE-493A-AEE7-24F7EEAFE0E9</td>
+<td>75DEDCF0-99C0-4867-B29A-7737A4F77A1F</td>
+<td>6CD3D5E8-FD85-4B63-95F6-6DA0AF91D7EF</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">476</td>
-<td>NERC</td>
-<td>NE/X01049X/1</td>
-<td>Cardiff University</td>
-<td>School of Biosciences</td>
-<td>Research Grant</td>
-<td>Perkins</td>
-<td>Sarah</td>
+<td data-quarto-table-cell-role="th">1584</td>
+<td>Horizon Europe Guarantee</td>
+<td>10103529</td>
+<td>UNIVERSITY OF LEEDS</td>
+<td>NaN</td>
+<td>EU-Funded</td>
+<td>Dunning</td>
+<td>Keri</td>
 <td>NaN</td>
 <td>NaN</td>
 <td>NaN</td>
 <td>...</td>
-<td>30/04/2024</td>
-<td>80604.0</td>
+<td>31/12/2026</td>
+<td>383564.0</td>
 <td>NaN</td>
-<td>Unknown</td>
+<td>Yorkshire and The Humber</td>
 <td>Active</td>
 <td>http://internal-gtr-tomcat-alb-611010599.eu-we...</td>
-<td>5EDF9C9D-4377-4C6F-B68D-2ED97C3653FE</td>
-<td>8A03ED41-E67D-4F4A-B5DD-AAFB272B6471</td>
-<td>052DE517-F298-4593-869D-03FE4A87442A</td>
-<td>A97539CC-A9E7-4F65-93AF-1F384A778583</td>
+<td>32037942-2A41-447D-9539-DA9F63A1054F</td>
+<td>240CEBFD-1052-4EAC-88DF-D88A163D61C8</td>
+<td>38CF3AB0-B06C-4A19-ACD0-386A7C74160F</td>
+<td>1234746C-0B5D-4CD0-AAFE-543056B28DAF</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">70</td>
+<td data-quarto-table-cell-role="th">1963</td>
 <td>Innovate UK</td>
-<td>83004296</td>
-<td>IAM COMPLIANT LIMITED</td>
+<td>10073837</td>
+<td>BRAITHWATE LTD</td>
 <td>NaN</td>
-<td>Innovation Loans</td>
-<td>Shepstone</td>
-<td>Clare</td>
+<td>Collaborative R&amp;D</td>
+<td>Vajala</td>
+<td>Arjun</td>
 <td>NaN</td>
 <td>NaN</td>
 <td>NaN</td>
 <td>...</td>
-<td>28/02/2025</td>
-<td>598136.0</td>
+<td>31/10/2025</td>
+<td>330922.0</td>
 <td>NaN</td>
-<td>North West</td>
+<td>London</td>
 <td>Active</td>
 <td>http://internal-gtr-tomcat-alb-611010599.eu-we...</td>
-<td>242FF645-7E4C-4231-8017-36FB675D6852</td>
+<td>156E495C-9FE1-4243-A4AA-C94208E0129A</td>
 <td>1308DB9B-A8CB-43DC-8754-A44B2F23F8E8</td>
-<td>DA6200B0-60DD-4DB3-9AE0-3202C5516F83</td>
-<td>A7FAE508-CF50-4A04-88FC-683F0D07BEA3</td>
+<td>F6949C7D-1BE6-462E-84E7-A9B331A25110</td>
+<td>9EDEEB84-86FE-4705-A1F0-0C3DF4FD3A0B</td>
 </tr>
 </tbody>
 </table>
 
 <p>3 rows × 25 columns</p>
-</div>
 </div>
 </div>
 </div>
@@ -793,9 +775,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+  function tippyHover(el, contentFn) {
     const config = {
       allowHTML: true,
+      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -805,17 +788,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start',
+      placement: 'bottom-start'
     };
-    if (contentFn) {
-      config.content = contentFn;
-    }
-    if (onTriggerFn) {
-      config.onTrigger = onTriggerFn;
-    }
-    if (onUntriggerFn) {
-      config.onUntrigger = onUntriggerFn;
-    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -828,125 +802,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
-    });
-  }
-  const xrefs = window.document.querySelectorAll('a.quarto-xref');
-  const processXRef = (id, note) => {
-    // Strip column container classes
-    const stripColumnClz = (el) => {
-      el.classList.remove("page-full", "page-columns");
-      if (el.children) {
-        for (const child of el.children) {
-          stripColumnClz(child);
-        }
-      }
-    }
-    stripColumnClz(note)
-    if (id === null || id.startsWith('sec-')) {
-      // Special case sections, only their first couple elements
-      const container = document.createElement("div");
-      if (note.children && note.children.length > 2) {
-        container.appendChild(note.children[0].cloneNode(true));
-        for (let i = 1; i < note.children.length; i++) {
-          const child = note.children[i];
-          if (child.tagName === "P" && child.innerText === "") {
-            continue;
-          } else {
-            container.appendChild(child.cloneNode(true));
-            break;
-          }
-        }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(container);
-        }
-        return container.innerHTML
-      } else {
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(note);
-        }
-        return note.innerHTML;
-      }
-    } else {
-      // Remove any anchor links if they are present
-      const anchorLink = note.querySelector('a.anchorjs-link');
-      if (anchorLink) {
-        anchorLink.remove();
-      }
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(note);
-      }
-      // TODO in 1.5, we should make sure this works without a callout special case
-      if (note.classList.contains("callout")) {
-        return note.outerHTML;
-      } else {
-        return note.innerHTML;
-      }
-    }
-  }
-  for (var i=0; i<xrefs.length; i++) {
-    const xref = xrefs[i];
-    tippyHover(xref, undefined, function(instance) {
-      instance.disable();
-      let url = xref.getAttribute('href');
-      let hash = undefined; 
-      if (url.startsWith('#')) {
-        hash = url;
-      } else {
-        try { hash = new URL(url).hash; } catch {}
-      }
-      if (hash) {
-        const id = hash.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note !== null) {
-          try {
-            const html = processXRef(id, note.cloneNode(true));
-            instance.setContent(html);
-          } finally {
-            instance.enable();
-            instance.show();
-          }
-        } else {
-          // See if we can fetch this
-          fetch(url.split('#')[0])
-          .then(res => res.text())
-          .then(html => {
-            const parser = new DOMParser();
-            const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.getElementById(id);
-            if (note !== null) {
-              const html = processXRef(id, note);
-              instance.setContent(html);
-            } 
-          }).finally(() => {
-            instance.enable();
-            instance.show();
-          });
-        }
-      } else {
-        // See if we can fetch a full url (with no hash to target)
-        // This is a special case and we should probably do some content thinning / targeting
-        fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.querySelector('main.content');
-          if (note !== null) {
-            // This should only happen for chapter cross references
-            // (since there is no id in the URL)
-            // remove the first header
-            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-              note.children[0].remove();
-            }
-            const html = processXRef(null, note);
-            instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
-      }
-    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -990,7 +845,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
-            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1016,32 +870,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
-        // Handle positioning of the toggle
-    window.addEventListener(
-      "resize",
-      throttle(() => {
-        elRect = undefined;
-        if (selectedAnnoteEl) {
-          selectCodeLines(selectedAnnoteEl);
-        }
-      }, 10)
-    );
-    function throttle(fn, ms) {
-    let throttle = false;
-    let timer;
-      return (...args) => {
-        if(!throttle) { // first call gets through
-            fn.apply(this, args);
-            throttle = true;
-        } else { // all the others get throttled
-            if(timer) clearTimeout(timer); // cancel #2
-            timer = setTimeout(() => {
-              fn.apply(this, args);
-              timer = throttle = false;
-            }, ms);
-        }
-      };
-    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1102,7 +930,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
-
 
 
 

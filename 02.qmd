@@ -1,5 +1,5 @@
 ---
-title: "Trend and Elit Project"
+title: "Trend and Elite Project"
 ---
 
 ```{r}

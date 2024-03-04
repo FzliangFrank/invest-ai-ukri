@@ -1,9 +1,0 @@
-"0","#| code-summary: Sample Data"
-"0","display(api_export.sample(3))"
-"1","                                      id  ...                                    potentialImpact
-6   4D8D8F6E-A32A-48AC-98D9-E55385F534F2  ...  The potential beneficiaries of MyLifeHub are i...
-6   D99CAD10-1CB9-434D-B552-1795DBBB6E94  ...  The output of this project will be a novel hum...
-23  54E45068-1019-4B5F-9B4E-49A2CB2B2B30  ...                                               None
-
-[3 rows x 5 columns]
-"

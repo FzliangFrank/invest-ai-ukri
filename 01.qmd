@@ -1,5 +1,6 @@
 ---
 title: "Getting Data"
+jupyter: python3
 ---
 
 ### Overview
@@ -20,7 +21,6 @@ can join.
 import requests
 import pandas as pd
 from IPython.display import display
-
 
 ## define a function to check interactivity
 ## so when render this document code take too long don't have to re-run everytime 

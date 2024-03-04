@@ -1,0 +1,126 @@
+---
+title: "Topic Modeling"
+---
+
+## Overview
+```{r}
+#| message: false
+#| code-summary: set up and load data
+require(tidyverse)
+require(readr)
+require(tidyr)
+require(arrow)
+
+gtr_desc = read_parquet("data/gtr.parquet")
+gtr_meta = read_csv("data/projectsearch-1709481069771.csv")
+```
+
+
+## Cleaning
+
+**overview**
+
+- Majority of data and link can join
+- Description and Title contains duplication:
+  - This is due to **project migration** when person of interests changes occupation;
+  - When this happens the human project id will ends with a `slash`.
+
+### How well does the two data set join
+
+```{r}
+JOIN_META_KEY = c("id"="ProjectId")
+
+desc_key = gtr_desc[[names(JOIN_META_KEY)]]
+meta_key = gtr_meta[[JOIN_META_KEY[[1]]]]
+
+stopifnot(
+  !any(duplicated(desc_key)),
+  !any(duplicated(meta_key))
+)
+can_join = intersect(desc_key, meta_key)
+desc_cant_join = setdiff(desc_key, meta_key)
+meta_cant_join= setdiff(meta_key, desc_key)
+
+pcg = round(length(can_join) / nrow(gtr_desc) * 100)
+
+message(glue::glue(
+  "{ pcg } % of description can find matching porject id in the csv export;\n",
+  "\nNumbers breakdown:\n",
+  "\t - {length(can_join)} can join;\n",
+  "\t - {length(desc_cant_join)} description will be taken out;\n",
+  "\t - {length(meta_cant_join)} from csv file will be taken out;\n"
+))
+```
+
+
+### Linked/Duplicated project
+
+```{r}
+#| code-summary: partial project or migrated project
+
+## migrated project consist of this pattern
+PARTIAL_PTN_DCT='(/[1-9])$'
+
+## waggle some columns for analytics
+gtr_pj = gtr_meta |> 
+  select(ProjectReference, FundingOrgName, LeadROName, ProjectId) |> 
+  mutate(
+    is_partial = str_detect(ProjectReference, PARTIAL_PTN_DCT),
+    project_ref = str_replace(ProjectReference,PARTIAL_PTN_DCT,""),
+    part = str_extract(ProjectReference, PARTIAL_PTN_DCT) |> 
+      str_extract("\\d+") |> 
+      as.numeric() |> 
+      coalesce(0)
+  )
+
+## early stop if this is no longer true
+stopifnot(
+  "Project Reference is Unique!"=length(unique(gtr_pj$ProjectReference)) == nrow(gtr_pj),
+  "Project Refrence contain null!"=!any(is.na(gtr_pj$ProjectReference))
+)
+
+## a lot of these are false duplicate? or have they simply not been included in 
+## the project? 
+gtr_pj |> 
+  filter(is_partial) |> 
+  group_by(project_ref) |>
+  mutate(occurance = n()) |> 
+  ungroup() |>
+  group_by(occurance) |> 
+  summarise(n_projects=n())
+## actually majority of these project will false alert
+```
+
+```{r}
+#| code-summary: examples of inheritance projects
+smp=sample(1:94,1)# 9/3 + 183/2 
+gtr_pj |> 
+  group_by(project_ref) |>
+  mutate(occurance = n()) |> 
+  filter(occurance != 1) |> 
+  ungroup() |> 
+  group_by(project_ref) |>
+  filter(cur_group_id() == smp) |> 
+  left_join(select(gtr_merge,id,abstractText,Title), by = c("ProjectId"="id")) |> 
+  select(ProjectReference, project_ref,Title,abstractText)
+```
+Although the project will have different `id`. The content is actually the same.
+So it is important these are taken out before input for analysis.
+
+For the analysis, we only need to take the first project which end with /1
+
+We will need to know which rows to keep which rows to delete
+
+```{r}
+## we need to 
+gtr_pj |> 
+  mutate()
+```
+
+
+
+
+
+
+
+

@@ -12,7 +12,7 @@ website:
     contents:
       - section: "Getting Data"
         contents:
-         - 01-get-data.qmd
+         - 01.qmd
       - section: "Analysis"
         contents:
          - 02.qmd
