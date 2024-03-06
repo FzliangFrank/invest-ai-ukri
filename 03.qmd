@@ -1,5 +1,5 @@
 ---
-title: "Topic Modeling"
+title: "Topic Modeling - Part 1"
 ---
 
 ## Overview
@@ -10,9 +10,14 @@ require(tidyverse)
 require(readr)
 require(tidyr)
 require(arrow)
+require(tidytext)
+require(ggplot2)
+require(ggrepel)
+require(gghighlight)
 
 gtr_desc = read_parquet("data/gtr.parquet")
-gtr_meta = read_csv("data/projectsearch-1709481069771.csv")
+gtr_meta = read_csv("data/projectsearch-1709481069771.csv") |> 
+  mutate(across(ends_with("Date"), ~as.Date(.x,"%d/%m/%Y")))
 ```
 
 
@@ -23,7 +28,7 @@ gtr_meta = read_csv("data/projectsearch-1709481069771.csv")
 - Majority of data and link can join
 - Description and Title contains duplication:
   - This is due to **project migration** when person of interests changes occupation;
-  - When this happens the human project id will ends with a `slash`.
+  - When this happens the `ProjectReference` will ends with a `slash`.
 
 ### How well does the two data set join
 
@@ -62,8 +67,7 @@ message(glue::glue(
 PARTIAL_PTN_DCT='(/[1-9])$'
 
 ## waggle some columns for analytics
-gtr_pj = gtr_meta |> 
-  select(ProjectReference, FundingOrgName, LeadROName, ProjectId) |> 
+gtr_pj = gtr_meta |>
   mutate(
     is_partial = str_detect(ProjectReference, PARTIAL_PTN_DCT),
     project_ref = str_replace(ProjectReference,PARTIAL_PTN_DCT,""),
@@ -71,7 +75,14 @@ gtr_pj = gtr_meta |>
       str_extract("\\d+") |> 
       as.numeric() |> 
       coalesce(0)
-  )
+  ) |> 
+  # filter(is_partial) |> 
+  group_by(project_ref) |>
+  mutate(occurance = n()) |> 
+  ungroup() |> 
+  relocate(ProjectReference, FundingOrgName, LeadROName, ProjectId, 
+           is_partial,project_ref,part,occurance
+           )
 
 ## early stop if this is no longer true
 stopifnot(
@@ -81,11 +92,7 @@ stopifnot(
 
 ## a lot of these are false duplicate? or have they simply not been included in 
 ## the project? 
-gtr_pj |> 
-  filter(is_partial) |> 
-  group_by(project_ref) |>
-  mutate(occurance = n()) |> 
-  ungroup() |>
+gtr_pj |>
   group_by(occurance) |> 
   summarise(n_projects=n())
 ## actually majority of these project will false alert
@@ -95,14 +102,10 @@ gtr_pj |>
 #| code-summary: examples of inheritance projects
 smp=sample(1:94,1)# 9/3 + 183/2 
 gtr_pj |> 
-  group_by(project_ref) |>
-  mutate(occurance = n()) |> 
-  filter(occurance != 1) |> 
-  ungroup() |> 
+  filter(occurance !=1) |> 
   group_by(project_ref) |>
   filter(cur_group_id() == smp) |> 
-  left_join(select(gtr_merge,id,abstractText,Title), by = c("ProjectId"="id")) |> 
-  select(ProjectReference, project_ref,Title,abstractText)
+  left_join(select(gtr_desc, id,abstractText,title), by = c("ProjectId"="id"))
 ```
 Although the project will have different `id`. The content is actually the same.
 So it is important these are taken out before input for analysis.
@@ -112,15 +115,200 @@ For the analysis, we only need to take the first project which end with /1
 We will need to know which rows to keep which rows to delete
 
 ```{r}
-## we need to 
-gtr_pj |> 
-  mutate()
+#| code-summary: keep only the first project
+unique_prj = gtr_pj |>
+  relocate(ProjectReference, project_ref, ProjectId) |> 
+  group_by(project_ref) |> 
+  mutate(rn=row_number()) |> 
+  filter(rn==1) |> 
+  select(-rn) |> 
+  inner_join(select(gtr_desc, id,abstractText,title), by = c("ProjectId"="id")) |> 
+  ungroup()
+```
+
+```{r}
+#| code-summary: check further duplication
+repeated_text = unique_prj |> 
+  group_by(abstractText) |> 
+  mutate(n=n()) |> 
+  filter(n!=1) |>
+  arrange(abstractText)
+
+repeated_text |> 
+  select(ProjectReference,title,abstractText, ProjectId)
+```
+Even with project dropped, most of these still have little descriptions
+
+
+## Word Count and Keyword Summary
+
+```{r}
+
+## Take the repeated test one out for now.
+analysis_prj = unique_prj |> 
+  anti_join(repeated_text, by="ProjectId") |> 
+  mutate(year = lubridate::year(StartDate))
+
+
+## function for tokenise target fiel
+tokenize_words_group = function(df, col, group_col) {
+  df |>
+    # preserve chained keywords
+    mutate(text_field = str_replace({{col}}, 
+                                    '(A|a)rtificial (I|i)ntelligence', 
+                                    'artificialintelligence') |> 
+             str_replace("machine learning",
+                         'machinelearning')
+           ) |> 
+    unnest_tokens(word,text_field, token="words") |> 
+    anti_join(stop_words,"word") |> 
+    mutate(word=str_replace(word,'artificialintelligence','artificial-intelligence') |> 
+             str_replace('machinelearning','machin-learning')
+           ) |> 
+    group_by(word, {{group_col}}) |> 
+    summarise(n_prj = length(unique(ProjectId)), .groups="drop" ) |> 
+    arrange(desc({{group_col}}),desc(n_prj)) |> 
+    ungroup()
+}
+
+rank_words = function(word_token, group_col) {
+  word_token |>
+    group_by({{group_col}}) |> 
+    dplyr::arrange(desc({{group_col}}),desc(n_prj)) |>
+    dplyr::mutate(rank = row_number()) |>
+    ungroup()
+}
+
+plot_top_n = function(word_token, n, group_col) {
+  top_n = rank_words(word_token, {{group_col}}) |> 
+    filter(rank <= n)
+  top_n |> 
+    arrange({{group_col}},rank) |>
+    ggplot(aes(x=n_prj, y = reorder_within(word, n_prj, {{group_col}} ))) +
+    geom_col(fill="midnightblue") + 
+    scale_y_reordered() +
+    facet_wrap(~ eval(enquo(group_col)), scales="free_y") +
+    xlab("number of porject") + ylab("word")
+}
+
+title_word_by_year = analysis_prj |> 
+  tokenize_words_group(title, year)
+
+abstrc_word_by_year = analysis_prj |> 
+  tokenize_words_group(abstractText, year)
+```
+
+
+```{r}
+title_word_by_year |>
+  filter(year >= 2016) |>
+  mutate(year = as.character(year)) |>
+  plot_top_n(15, year)
+```
+```{r}
+abstrc_word_by_year |>
+  filter(year >= 2016) |>
+  mutate(year = as.character(year)) |>
+  plot_top_n(15, year)
+```
+
+
+```{r}
+## track progression of top n over years
+plt_style_change = function(text_by_year, 
+                            fav_words=c("artificial-intelligence","ai","health", "machine-learning","learning"),
+                            limit_rank = 10,
+                            weight = c("pcg", "absolute")
+                            ) {
+  
+  if(weight[1] == "absolute") {
+    weightQ = quo(n_prj)
+  } else if (weight[1] == "pcg") {
+    weightQ = quo(pcg_prj)
+  } else {
+    stop()
+  }
+  
+  word_ranked = text_by_year |> 
+    # filter(year > 2010) |> 
+    rank_words(year) |> 
+    group_by(year) |> 
+    mutate(pcg_prj = n_prj/sum(n_prj)) |> 
+    ungroup()
+  
+  top_n = word_ranked |>
+    filter(rank <= limit_rank) |> 
+    ## join back words that were crop out in top n ranking
+    select(-n_prj, -rank,-pcg_prj)
+  
+  top_n_complete =
+    tidyr::expand(top_n, year, word) |> 
+    left_join(word_ranked, c("year","word")) |> 
+    mutate(across(c(n_prj, pcg_prj), ~coalesce(.x,0))) |> 
+    mutate(rank = coalesce(rank, max(word_ranked$rank + 1)))
+    
+  top_n_complete |> 
+    filter(year >= 2010 & year <= 2023) |> 
+    ggplot(aes(x=year,y= !! weightQ, color=word)) + 
+    geom_line() +
+    geom_point() +
+    theme(legend.position = "none", axis.text.y.right = element_text(size = 20)) + 
+    # scale_y_reverse() +
+    gghighlight(word %in% fav_words,
+                unhighlighted_params=list(alpha=0.2),
+                line_label_type = "text_path"#"sec_axis"
+                ) +
+    scale_color_brewer(palette="Set2") +
+    theme_minimal()
+}
+```
+
+
+```{r}
+#| warning: false
+INTERESTING_WORDS = c("artificial-intelligence","ai","health")
+title_word_by_year |> 
+  plt_style_change(
+    INTERESTING_WORDS
+  ) +
+  ylab("propotion of project") +
+  ggtitle("Keywords mention in project title",
+          stringr::str_wrap(glue::glue("The mention of 'health' seen a sharp raise in 2020. ",
+          "Researchers are more comformatble using term 'ai' rather than 'aritificial-intelligence'"),80)
+          )
+```
+
+
+```{r}
+#| warning: false
+INTERESTING_WORDS = c("artificial-intelligence","ai","health")
+title_word_by_year |> 
+  plt_style_change(
+    INTERESTING_WORDS,
+    weight="pcg"
+  ) +
+  ylab("absolute number of project")
 ```
 
 
 
-
-
-
-
+```{r}
+#| warning: false
+INTERESTING_WORDS=c("ai","artificial-intelligence","covid","health","artificial")
+abstrc_word_by_year |> 
+  plt_style_change(
+    fav_words=INTERESTING_WORDS,
+    limit_rank = 30
+  )
+```
+```{r}
+#| warning: false
+INTERESTING_WORDS=c("ai","artificial-intelligence","covid","health","artificial")
+abstrc_word_by_year |> 
+  plt_style_change(
+    fav_words=INTERESTING_WORDS,
+    limit_rank = 30,
+    weight="pcg"
+  )
+```
 

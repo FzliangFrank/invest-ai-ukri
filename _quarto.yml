@@ -16,9 +16,11 @@ website:
       - section: "Analysis"
         contents:
          - 02.qmd
+         - 03.qmd
 
 format:
   html:
     theme: cosmo
     code-fold: true
     toc: true
+    df-print: paged
