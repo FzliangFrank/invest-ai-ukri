@@ -1,0 +1,88 @@
+---
+title: "Appendix - Experiment of Zipf's Law"
+---
+
+
+## Word Frequency Experiment - Zipf's law
+
+
+
+```{r}
+require(janeaustenr)
+require(tidytext)
+require(tidyverse)
+
+natural = austen_books() |> 
+  filter(book == "Sense & Sensibility") |> 
+  unnest_tokens(word,text) |> 
+  count(book,word,sort=T) |> 
+  
+  ungroup() |> 
+  group_by(book) |> 
+  mutate(total = sum(n)) |>
+  ungroup() |> 
+  
+  mutate(freq=n/total, rank=row_number()) |> 
+  mutate(freq, rank, type=paste("natural - ", book)) |> 
+  select(freq, rank,type)
+  
+
+generate_freq_rank = function( FUN=runif, n = max(natural$rank)) {
+  x = FUN(n)
+  x_nrom = x/sum(x)
+  freq = sort(x_nrom,decreasing=T)
+  rank = seq(length(freq))
+  return(data.frame(freq=freq,rank=rank))
+}
+```
+
+
+```{r}
+rbind(
+  natural,
+  cbind(generate_freq_rank(rexp), type="rexp"),
+  cbind(generate_freq_rank(runif), type="runif"),
+  cbind(generate_freq_rank(rnorm),type="normal")
+  ) |> 
+  ggplot(aes(x=rank,y=freq,color=type)) + 
+  geom_line() + 
+  theme_minimal() +
+  ggtitle("Compare Normal, Exponential, Univaritive Sample - At Normal Scale",
+          "Rank to Frequency of Terms"
+          )
+```
+
+
+
+```{r}
+rbind(
+  natural,
+  cbind(generate_freq_rank(rexp), type="rexp"),
+  cbind(generate_freq_rank(runif), type="runif"),
+  cbind(generate_freq_rank(rnorm),type="normal")
+  ) |> 
+  ggplot(aes(x=rank,y=freq,color=type)) + 
+  geom_line() + 
+  scale_x_log10() +
+  scale_y_log10() +
+  theme_minimal() +
+  ggtitle("Compare Normal, Exponential, Univaritive Sample - At Log10 Scale",
+          "Rank to Frequency of Terms")
+```
+
+
+```{r}
+rbind(
+  natural,
+  cbind(generate_freq_rank(rexp), type="rexp")
+  # cbind(generate_freq_rank(runif), type="runif"),
+  # cbind(generate_freq_rank(rnorm),type="normal")
+  ) |> 
+  ggplot(aes(x=rank,y=freq,color=type)) + 
+  geom_line() + 
+  scale_x_log10() +
+  scale_y_log10() +
+  theme_minimal() +
+  ggtitle("Natual Language Is Mostly Close to Expential but much steaper than Exponetial")
+```
+

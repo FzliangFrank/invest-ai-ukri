@@ -1,5 +1,6 @@
 project:
   type: website
+  output-dir: docs
 
 website:
   title: "Investing in AI - UKRI"
@@ -10,13 +11,18 @@ website:
   sidebar:
     search: true
     contents:
+      - section: "Home"
+        contents:
+        - index.qmd
       - section: "Getting Data"
         contents:
          - 01.qmd
-      - section: "Analysis"
+      - section: "Journey"
         contents:
-         - 02.qmd
-         - 03.qmd
+         - 02.qmd #trend
+         - 03.qmd #semetic
+         # - 04.qmd #topic model
+         - 05.qmd
 
 format:
   html:

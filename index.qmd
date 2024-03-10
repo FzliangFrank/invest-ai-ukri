@@ -1,5 +1,5 @@
 ---
-title: "Invest in AI Executive Summary"
+title: "Welcome"
 ---
 
 
@@ -9,15 +9,40 @@ title: "Invest in AI Executive Summary"
 <!-- Should evaluate as less as possible.  -->
 
 ```{r}
-print("Hello Panel!")
+#| message: false
+library(tidyverse)
+library(tidygraph)
+library(ggraph)
+library(arrow)
+library(tidytext)
 ```
+
+
+## Intro
+
+Welcome! 
 
 
 <!-- SECTION 0: THE LEAD/THE CONTEXT -->
 <!-- - Something a short pitch like Lead Character, Context, Hook, the Pain -->
 
+### Data Source?
+
+
+### Data usage - What's used? What has been taken out?
 <!-- SECTION 1: DATA PIPLEINE -->
 <!-- - Here is how I get the data -->
 <!-- - Here are how good they are. Just one line section -->
 
+### Okay, now what does the word look like
+
+
 <!-- SECTION 2: GENERAL STATISTICS -->
+
+### Topic Modeling
+
+## Other Findings
+
+#### Word Trend and Time Event
+
+#### Researcher Migration

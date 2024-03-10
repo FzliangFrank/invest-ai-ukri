@@ -100,6 +100,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
 
 </head>
@@ -191,7 +193,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./03.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Topic Modeling</span></a>
+ <span class="menu-text">Basic Text Ananlysis - Word Occurance</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Text Analysis - Use N-Gram Graph</span></a>
   </div>
 </li>
       </ul>
@@ -202,7 +210,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#intro" id="toc-intro" class="nav-link active" data-scroll-target="#intro">Intro</a>
+  <ul class="collapse">
+  <li><a href="#data-source" id="toc-data-source" class="nav-link" data-scroll-target="#data-source">Data Source?</a></li>
+  <li><a href="#data-usage---whats-used-what-has-been-taken-out" id="toc-data-usage---whats-used-what-has-been-taken-out" class="nav-link" data-scroll-target="#data-usage---whats-used-what-has-been-taken-out">Data usage - What’s used? What has been taken out?</a></li>
+  <li><a href="#okay-now-what-does-the-word-look-like" id="toc-okay-now-what-does-the-word-look-like" class="nav-link" data-scroll-target="#okay-now-what-does-the-word-look-like">Okay, now what does the word look like</a></li>
+  <li><a href="#topic-modeling" id="toc-topic-modeling" class="nav-link" data-scroll-target="#topic-modeling">Topic Modeling</a></li>
+  </ul></li>
+  <li><a href="#other-findings" id="toc-other-findings" class="nav-link" data-scroll-target="#other-findings">Other Findings</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -232,20 +253,46 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"Hello Panel!"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidygraph)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggraph)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(arrow)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidytext)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "Hello Panel!"</code></pre>
 </div>
-</div>
+<section id="intro" class="level2">
+<h2 class="anchored" data-anchor-id="intro">Intro</h2>
+<p>Welcome!</p>
 <!-- SECTION 0: THE LEAD/THE CONTEXT -->
 <!-- - Something a short pitch like Lead Character, Context, Hook, the Pain -->
+<section id="data-source" class="level3">
+<h3 class="anchored" data-anchor-id="data-source">Data Source?</h3>
+</section>
+<section id="data-usage---whats-used-what-has-been-taken-out" class="level3">
+<h3 class="anchored" data-anchor-id="data-usage---whats-used-what-has-been-taken-out">Data usage - What’s used? What has been taken out?</h3>
 <!-- SECTION 1: DATA PIPLEINE -->
 <!-- - Here is how I get the data -->
 <!-- - Here are how good they are. Just one line section -->
+</section>
+<section id="okay-now-what-does-the-word-look-like" class="level3">
+<h3 class="anchored" data-anchor-id="okay-now-what-does-the-word-look-like">Okay, now what does the word look like</h3>
 <!-- SECTION 2: GENERAL STATISTICS -->
+</section>
+<section id="topic-modeling" class="level3">
+<h3 class="anchored" data-anchor-id="topic-modeling">Topic Modeling</h3>
+</section>
+</section>
+<section id="other-findings" class="level2">
+<h2 class="anchored" data-anchor-id="other-findings">Other Findings</h2>
+<section id="word-trend-and-time-event" class="level4">
+<h4 class="anchored" data-anchor-id="word-trend-and-time-event">Word Trend and Time Event</h4>
+</section>
+<section id="researcher-migration" class="level4">
+<h4 class="anchored" data-anchor-id="researcher-migration">Researcher Migration</h4>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
