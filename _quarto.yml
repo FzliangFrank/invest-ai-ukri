@@ -17,12 +17,14 @@ website:
       - section: "Getting Data"
         contents:
          - 01.qmd
-      - section: "Journey"
+      - section: "Topic Model"
+        contents:
+         # - 04.qmd #topic model
+         - 05.qmd
+      - section: "Other Findings"
         contents:
          - 02.qmd #trend
          - 03.qmd #semetic
-         # - 04.qmd #topic model
-         - 05.qmd
 
 format:
   html:

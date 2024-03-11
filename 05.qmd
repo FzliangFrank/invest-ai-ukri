@@ -1,8 +1,6 @@
 ---
-title: "Explore Topic Modeling"
-editor: visual
+title: "Topic Modeling"
 ---
-
 
 ```{r}
 #| message: false
@@ -15,7 +13,13 @@ library(tidytext)
 ```
 
 
+## Overview
+
+Topic modeling is usefully for categorize long text into themes without reading
+full text. 
+
 ### Load Data
+
 ```{r}
 #| message: false
 #| code-summary: set up and load data
@@ -73,23 +77,6 @@ analysis_prj = unique_prj |>
   inner_join(gtr_desc, by="id")
 ```
 
-### N Gram Exploration
-
-```{r}
-## break into bi-grame
-abstract_words = analysis_prj |>
-  unnest_tokens(word, abstractText, "ngrams",n=2, drop=T) |> 
-  count(word,id, sort=T)
-
-## try this `bind_tf_idf` function
-word_distinct = abstract_words |> 
-  bind_tf_idf(word,id, n)
-
-## tf_idf is good for sceope out distinct words about something?
-word_distinct |> 
-  arrange(desc(tf_idf))
-```
-
 ### Review Abstract Word Count of Abstract
 
 ```{r}
@@ -97,7 +84,6 @@ word_distinct |>
 analysis_prj |> 
   count(ProjectCategory,sort=T)
 ```
-
 
 ```{r}
 ## word count histogram
@@ -112,12 +98,21 @@ abstract_words |>
   ggtitle("Abstract Length") +
   facet_wrap(~ ProjectCategory)
 ```
-Research Grant and Studentship have "rich" abstract we can extract on.
-You probably what to filter down to Research Grant before modeling
+
+Research Grant and Studentship have "rich" abstract we can extract on. You probably what to filter down to Research Grant before modeling
+
+## Topic Model
 
 ### Topic Modeling using LDA
 
+Key matrix from topic models are:
+
+- Gemma: is proportion of topics for each document
+- Beta: is weight of words for each topic.
+
 ```{r}
+#| code-summary: code for creating topic modelings 
+#| code-fold: show
 abstract_word_count = abstract_words |> 
   count(word,id,sort=T)
 
@@ -133,6 +128,8 @@ if(interactive()) {
 ```
 
 ```{r}
+#| code-summary: code for creating topic modelings 
+#| code-fold: show
 topics |> 
   tidy("beta") |> 
   group_by(topic) |> 
@@ -146,14 +143,15 @@ topics |>
   ylab("term") +
   ggtitle("LDA model output result (beta)")
 ```
-This is a typical graph used to visualize LDA output. `beta` indicate importance of
-words to extracted topic.
 
-However, it is still not easy to tell what these topic actually are.
-We can use `n-gram` to link most frequently linked words, which will give us a 
-picture of how "these key words" links together.
+This is a typical graph used to visualize LDA output. `beta` indicate importance of words to extracted topic.
+
+However, it is still not easy to tell what these topic actually are. 
+To explore topic, 
+`n-gram` to link most frequently linked words, which will give us a picture of how "these key words" links together.
 
 ```{r}
+#| code-fold: show
 ## examples of top 10 topics.
 top10_gamma = topics |> 
   tidy("gamma") |> 
@@ -162,6 +160,7 @@ top10_gamma = topics |>
   rename(id=document)
 top10_gamma |> left_join(gtr_desc,by="id")
 ```
+
 ### Topic against Project Category
 
 ```{r}
@@ -321,8 +320,7 @@ plot_topics = function(model,reps_tk,reps_docs,topic_ki,color= "cyan4") {
 }
 ```
 
-The topic modeling are in fact picking up different types of topics. Particularly
-"*Studentship*" is extracted as *topic 2*, "*Collaborative R & D*" is almost exclusively extracted as *topic 10*.
+The topic modeling are in fact picking up different types of topics. Particularly "*Studentship*" is extracted as *topic 2*, "*Collaborative R & D*" is almost exclusively extracted as *topic 10*.
 
 ```{r,fig.height=20,fig.width=15}
 G=map(c(2,10),~plot_topics(model=topics,
@@ -332,12 +330,9 @@ G=map(c(2,10),~plot_topics(model=topics,
 ggpubr::ggarrange(plotlist=G,nrow=2)
 ```
 
-*Topic 3* seems to be describe about "machine learning". One of the hot words. 
-It makes no surprise that some how related to *student ship*.
+*Topic 3* seems to be describe about "machine learning". One of the hot words. It makes no surprise that some how related to *student ship*.
 
-
-*topic 8*, *topic 9* both are very scientific. As we can see the description 
-are very sentific and specific to particular field.
+*topic 8*, *topic 9* both are very scientific. As we can see the description are very sentific and specific to particular field.
 
 ```{r,fig.height=20,fig.width=15}
 G=map(c(8,9),~plot_topics(model=topics,
@@ -346,11 +341,10 @@ G=map(c(8,9),~plot_topics(model=topics,
                         topic_ki=.x))
 ggpubr::ggarrange(plotlist=G,nrow=2)
 ```
+
 *topic 8* probably sounds like biology. *topic 9* sounds like material science.
 
-It also interesting to see that although term "*artificial intelligence*" is 
-frequently linked together, the "beta" score is actually low. 
-
+It also interesting to see that although term "*artificial intelligence*" is frequently linked together, the "beta" score is actually low.
 
 ### Topic Against Institution
 
@@ -361,14 +355,9 @@ topics |>
   left_join(gtr_desc,c("document"="id"))
 ```
 
-
-
-
 ### Focus on Research Grant
 
-The histogram shows us that *research grant* is the biggest chunk. 
-So let's apply "research grant" by itself to see if there anything interesting.
-
+The histogram shows us that *research grant* is the biggest chunk. So let's apply "research grant" by itself to see if there anything interesting.
 
 ```{r}
 ## filter to research project only
@@ -411,25 +400,6 @@ res_reps_top = res_reps |>
   slice_max(gamma,n=1)
 ```
 
-<!-- ```{r} -->
-<!-- topics |>  -->
-<!--   tidy("gamma") |>  -->
-<!--   filter(gamma != 0) |>  -->
-<!--   ggplot() +  -->
-<!--   geom_histogram(aes(x=gamma)) + -->
-<!--   facet_wrap(~ topic) + -->
-<!--   theme_minimal() + -->
-<!--   scale_x_log10() -->
-
-<!-- res_lda |>  -->
-<!--   tidy("gamma") |>  -->
-<!--   filter(gamma != 0) |>  -->
-<!--   ggplot() +  -->
-<!--   geom_histogram(aes(x=gamma)) + -->
-<!--   facet_wrap(~ topic) + -->
-<!--   theme_minimal() + -->
-<!--   scale_x_log10() -->
-<!-- ``` -->
 
 ```{r}
 ## a simple test of co-herence
@@ -438,11 +408,10 @@ res_reps |>
   slice_max(gamma,n=1) |> 
   select(topic,LeadROName,Department,Title)
 ```
-Just by looking at department of research topic, it seems that some of the topic 
-perhaps not as coherent as we hopped. It is possible that we need less topic than
-10 perhaps.
 
-Lets do another sample
+Just by looking at department of research topic, it seems that some of the topic perhaps not as coherent as we hopped. It is possible that we need less topic than 10 perhaps.
+
+Lets do another sample:
 
 ```{r}
 res_reps |> 
@@ -450,6 +419,7 @@ res_reps |>
   slice_sample(n=1) |> 
   select(topic,LeadROName,Department,Title)
 ```
+
 So actually this maybe doing alright. Lets analysis department fields.
 
 ```{r}
@@ -470,9 +440,7 @@ res_reps |>
   ggtitle("Topic Versus Research Insititution Deparatment")
 ```
 
-
-So 5 and 6 could be similar, 3 and 4 could stand one topic. But we cannot be too sure yet.
-So 
+So 5 and 6 could be similar, 3 and 4 could stand one topic. But we cannot be too sure yet. So
 
 ```{r}
 #| code-fold: show
@@ -493,12 +461,11 @@ topic_guess = c(
 )
 ```
 
-Interestingly, climate change is on longer on this.
-For continence, we put number 1,7,8 all under one umberalla "AI & Public Well-fare'
-which 
+Interestingly, climate change is on longer on this. 
+
+For analysis purposes, we put number 1,7,8 all under one umberalla "AI & Public Well-fare'.
 
 ### Trending Research
-
 
 ```{r}
 topic_by_year = res_lda |> 
@@ -543,10 +510,9 @@ topic_by_year |>
 
 ## Appendix
 
-### Developing a Visualization for Topic Modeling**
+### Developing a Visualization for Topic Modeling\*\*
 
-I found bi-gram graph compensate traditional beta count graph. Instead of 
-"reading tea leafs", you can try read along the edge.
+I found bi-gram graph compensate traditional beta count graph. Instead of "reading tea leafs", you can try read along the edge.
 
 ```{r,fig.height=15,fig.width=15}
 #| code-summary: draft script
@@ -586,7 +552,6 @@ for (i in c(2,10,8,9)) {
 ggpubr::ggarrange(plotlist=G,ncol=2, nrow=2)
 ```
 
-
 ### List of all Topics From the Frist Extraction
 
 ```{r,fig.height=85,fig.width=15}
@@ -600,7 +565,7 @@ ggpubr::ggarrange(plotlist=G,nrow=10)
 
 ### List of All Topic Extraction for Research Grant Only
 
-The topic read 
+The topic read
 
 ```{r,fig.height=85,fig.width=15}
 #| code-summary: plot all topics trained so far

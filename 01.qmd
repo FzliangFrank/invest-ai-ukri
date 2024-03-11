@@ -5,7 +5,7 @@ jupyter: python3
 
 ### Overview
 
-*note*: code in this notebook are written in `python`
+code in this notebook are written in `python`
 
 There are two data source: 
 

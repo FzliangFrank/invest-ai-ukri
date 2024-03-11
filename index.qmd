@@ -18,31 +18,32 @@ library(tidytext)
 ```
 
 
-## Intro
+## Welcome! 
 
-Welcome! 
+**About** 
+
+This project is dedicated for UK Research & Innovation in application of the role 
+"Senior Analyst".
+
+I come across UKRI data during my master degree. My "business project" use
+Gateway to Research to try extract insight about research funding about 
+"Artificial Intelligence" for University of Exeter. This *sample work* is my
+rework at this project.
 
 
-<!-- SECTION 0: THE LEAD/THE CONTEXT -->
-<!-- - Something a short pitch like Lead Character, Context, Hook, the Pain -->
+**Main Methodology**
 
-### Data Source?
+This works use "Topic Modeling" (LDA) to extract interesting "funding abstract" related 
+to "Artifical Intelligence".
 
 
-### Data usage - What's used? What has been taken out?
-<!-- SECTION 1: DATA PIPLEINE -->
-<!-- - Here is how I get the data -->
-<!-- - Here are how good they are. Just one line section -->
+**Programming Language**
 
-### Okay, now what does the word look like
+The API call using `Python` (this is the only code section use that). All other 
+analysis use `R`. 
+
+The web page is a static html written in `quarto`.
+
 
 
 <!-- SECTION 2: GENERAL STATISTICS -->
-
-### Topic Modeling
-
-## Other Findings
-
-#### Word Trend and Time Event
-
-#### Researcher Migration
